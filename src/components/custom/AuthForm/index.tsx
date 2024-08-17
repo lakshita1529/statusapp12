@@ -1,14 +1,13 @@
-
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from '../../../styles/AuthForm.module.css';
 
 interface AuthFormProps {
-  onSubmit: (username: string, email: string, password: string) => void;
+  onSubmit: (email: string, password: string) => void;
   buttonText: string;
   text?: string;
   linkText?: string;
   linkTo?: string;
-  includeEmail?: boolean; 
+  includeEmail?: boolean;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
@@ -19,29 +18,21 @@ const AuthForm: React.FC<AuthFormProps> = ({
   linkTo,
   includeEmail = true,
 }) => {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(username, email, password);
+    if (email && password) { 
+      onSubmit(email, password);
+    } else {
+      console.error('Email and password are required');
+    }
   };
 
   return (
     <div className={styles.formContainer}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.formGroup}>
-          <label htmlFor="username" className={styles.formLabel}>Username</label>
-          <input
-            type="text"
-            id="username"
-            className={styles.formInput}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
         {includeEmail && (
           <div className={styles.formGroup}>
             <label htmlFor="email" className={styles.formLabel}>Email</label>

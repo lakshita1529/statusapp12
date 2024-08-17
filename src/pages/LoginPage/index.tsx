@@ -1,5 +1,6 @@
+import React from 'react';
 import AuthForm from '../../components/custom/AuthForm';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useauth';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/AuthForm.module.css';
 
@@ -7,10 +8,11 @@ const Login: React.FC = () => {
   const { login, error } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (username: string, email: string, password: string) => {
-  
-    login(username, password).then(() => {
-      navigate('/dashboard'); 
+  const handleLogin = (email: string, password: string) => {
+    login(email, password).then(() => {
+      navigate('/dashboard');
+    }).catch((err) => {
+      console.error('Login failed:', err); // Add error handling here if needed
     });
   };
 
@@ -22,8 +24,8 @@ const Login: React.FC = () => {
         buttonText="Login"
         text="Don't have an account?"
         linkText="Register here"
-        linkTo="/register"
-        includeEmail={false} 
+        linkTo="/"
+        includeEmail={true}
       />
       {error && <div className={styles.error}>{error}</div>}
     </div>

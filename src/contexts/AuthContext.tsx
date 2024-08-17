@@ -1,16 +1,15 @@
-import React, { createContext, useState, ReactNode } from 'react';
-import { login as firebaseLogin, register as firebaseRegister } from '../../lib/firebase';
+import  { createContext, useState, ReactNode } from 'react';
+import { login as firebaseLogin, register as firebaseRegister } from '../lib/utils/firebase';
 
 interface User {
-  username?: string;
   email: string;
 }
 
 interface AuthContextProps {
   user: User | null;
   error: string | null;
-  login: (username: string, password: string) => Promise<void>;
-  register: (username: string, email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -20,26 +19,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     try {
-      // Convert username to email format or fetch the email associated with the username
-      // Assuming the username is an actual email
-      await firebaseLogin(username, password);
-      setUser({ username, email: username });
+      await firebaseLogin(email, password);
+      setUser({ email });
       setError(null);
-    } catch (err) {
-      console.error("Login error:", err);
+    } catch (err: any) {
+      console.error("Login error:", err.message);
       setError('Login failed. Please check your credentials.');
     }
   };
 
-  const register = async (username: string, email: string, password: string) => {
+  const register = async (email: string, password: string) => {
     try {
       await firebaseRegister(email, password);
-      setUser({ username, email });
+      setUser({ email });
       setError(null);
-    } catch (err) {
-      console.error("Registration error:", err);
+    } catch (err: any) {
+      console.error("Registration error:", err.message);
       setError('Registration failed. Please try again.');
     }
   };
