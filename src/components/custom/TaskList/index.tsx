@@ -1,14 +1,14 @@
 
-import  { useState, useEffect } from 'react';
-import { getTasks } from '../../../lib/utils/firebase';
-import { TaskListContainer, TaskItem } from '../../shared/AppStyle';
+import React, { useState, useEffect } from "react";
+import { getTasks } from "../../../lib/utils/localStorage"; 
+import { TaskListContainer, TaskItem } from "../../shared/AppStyle";
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<any[]>([]);
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      const fetchedTasks = await getTasks();
+    const fetchTasks = () => {
+      const fetchedTasks = getTasks(); 
       setTasks(fetchedTasks);
     };
 

@@ -12,7 +12,7 @@ const Login: React.FC = () => {
     login(email, password).then(() => {
       navigate('/dashboard');
     }).catch((err) => {
-      console.error('Login failed:', err); // Add error handling here if needed
+      console.error('Login failed:', err);
     });
   };
 

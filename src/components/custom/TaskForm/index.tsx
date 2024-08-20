@@ -1,4 +1,3 @@
-// src/components/custom/TaskForm.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,6 +10,8 @@ import {
   TaskFormTime,
 } from "../../shared/AppStyle";
 import { getPeriod } from "../../../lib/utils/timeUtils";
+import { saveTask } from "../../../lib/utils/localStorage"; 
+import { v4 as uuidv4 } from "uuid"; 
 
 const TaskForm: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -23,11 +24,22 @@ const TaskForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // local storage logic
+
+    const newTask = {
+      id: uuidv4(), 
+      title,
+      description,
+      tag,
+      timestamp: new Date().toISOString(),
+    };
+
+    saveTask(newTask); 
+
     setAlertMessage("Record submitted successfully");
     setTitle("");
     setDescription("");
     setTag("Trainee");
+
     setTimeout(() => {
       setAlertMessage(null);
       navigate("/dashboard");
